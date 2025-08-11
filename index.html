@@ -2,199 +2,140 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>IND Connect</title>
+  <title>SoulSpeak</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #fceabb, #f8b500);
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #d9afd9, #97d9e1);
       color: #333;
-    }
-
-    header {
-      background: #ff4081;
-      color: white;
-      padding: 20px;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
     }
 
-    header h1 {
-      font-size: 1.8em;
-      margin: 0;
+    h1 {
+      font-size: 2em;
+      margin-bottom: 5px;
+      color: #444;
     }
 
-    nav a {
-      margin-left: 20px;
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .container {
-      max-width: 700px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-
-    .search {
-      margin-bottom: 20px;
-    }
-
-    .search input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    .tagline {
       font-size: 1em;
+      color: #555;
+      margin-bottom: 20px;
+      text-align: center;
+      max-width: 600px;
     }
 
-    .profile {
+    .chat-box, .post-box {
       background: white;
-      padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-    }
-
-    .profile img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      margin-right: 15px;
-    }
-
-    .profile h2 {
-      margin: 0;
-      font-size: 1.4em;
-    }
-
-    .profile p {
-      margin: 5px 0 0;
-      font-size: 0.95em;
-      color: #666;
-    }
-
-    .post-box {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-
-    .post-box textarea {
       width: 100%;
-      height: 80px;
+      max-width: 600px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .chat-log {
+      height: 200px;
+      overflow-y: auto;
+      margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 8px;
       padding: 10px;
-      resize: none;
+      background: #f9f9f9;
+    }
+
+    .chat-log p {
+      margin: 5px 0;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
       font-size: 1em;
     }
 
-    .post-box button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background: #ff4081;
+    button {
+      background: #6a11cb;
       color: white;
       border: none;
-      border-radius: 8px;
-      font-weight: bold;
       cursor: pointer;
       transition: background 0.3s ease;
     }
 
-    .post-box button:hover {
-      background: #e91e63;
-    }
-
-    .feed {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    .feed .post {
-      border-bottom: 1px solid #eee;
-      padding: 15px 0;
-    }
-
-    .feed .post:last-child {
-      border-bottom: none;
-    }
-
-    .feed .post strong {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: 600;
-    }
-
-    .feed .post .actions {
-      margin-top: 8px;
-      font-size: 0.9em;
-      color: #888;
+    button:hover {
+      background: #2575fc;
     }
 
     .footer {
-      text-align: center;
-      padding: 30px;
+      margin-top: 40px;
       font-size: 0.9em;
-      color: #777;
+      color: #666;
+      text-align: center;
+      max-width: 600px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>IND Connect</h1>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Explore</a>
-      <a href="#">Profile</a>
-    </nav>
-  </header>
-
-  <div class="container">
-    <div class="search">
-      <input type="text" placeholder="Search IND...">
-    </div>
-
-    <div class="profile">
-      <img src="https://via.placeholder.com/60" alt="Avatar">
-      <div>
-        <h2>GuestUser</h2>
-        <p>Exploring the vibe. ✨</p>
-      </div>
-    </div>
-
-    <div class="post-box">
-      <textarea placeholder="What's on your mind?"></textarea>
-      <button>Post</button>
-    </div>
-
-    <div class="feed">
-      <div class="post">
-        <strong>GuestUser</strong>
-        Just joined IND Connect. Loving the energy! 🔥
-        <div class="actions">❤️ 12 · 💬 3</div>
-      </div>
-      <div class="post">
-        <strong>IndieSoul</strong>
-        Anyone working on a creative project? Let’s collab!
-        <div class="actions">❤️ 8 · 💬 5</div>
-      </div>
-    </div>
+  <h1>🌌 SoulSpeak</h1>
+  <div class="tagline">
+    We’re here for you. Your best friends will review you soon—be patient, we care. This is your space to breathe, speak, and heal.
   </div>
 
-  <div class="footer">© 2025 IND Connect. Built for the vibe.</div>
+  <div class="chat-box">
+    <div class="chat-log" id="chatLog">
+      <p><strong>Bot:</strong> Hey there, beautiful soul. I'm Alysa. How are you feeling today?</p>
+    </div>
+    <input type="text" id="userInput" placeholder="Type something..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <div class="post-box">
+    <h3>📝 Share Your Thoughts</h3>
+    <textarea id="traumaText" placeholder="Write what's on your heart..."></textarea>
+    <button onclick="submitPost()">Post Anonymously</button>
+  </div>
+
+  <div class="footer">
+    © 2025 SoulSpeak. You are not alone. We’re listening, always.
+  </div>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById('userInput').value;
+      const chatLog = document.getElementById('chatLog');
+      if (input.trim() === '') return;
+
+      chatLog.innerHTML += `<p><strong>You:</strong> ${input}</p>`;
+
+      let response = "I'm here for you. Want to share more?";
+      const lower = input.toLowerCase();
+      if (lower.includes("hello")) response = "Hi! I’m really glad you stopped by. 🌸";
+      if (lower.includes("sad") || lower.includes("depressed")) response = "I'm so sorry you're feeling this way. You're safe here. Want to talk?";
+      if (lower.includes("help")) response = "You're not alone. I'm here to support you. What’s been going on?";
+      if (lower.includes("happy")) response = "That’s beautiful to hear! What’s bringing you joy today?";
+      if (lower.includes("alone")) response = "You’re not alone anymore. I’m right here with you.";
+
+      chatLog.innerHTML += `<p><strong>Bot:</strong> ${response}</p>`;
+      document.getElementById('userInput').value = '';
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function submitPost() {
+      const text = document.getElementById('traumaText').value;
+      if (text.trim() === '') return;
+      alert("Your thoughts have been shared anonymously. Thank you for trusting us.");
+      document.getElementById('traumaText').value = '';
+    }
+  </script>
 </body>
 </html>
 
