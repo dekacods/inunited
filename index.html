@@ -1,133 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SoulSpeak</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0f0f0f;
-      color: #f5f5f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    textarea {
-      width: 90%;
-      max-width: 600px;
-      height: 200px;
-      background: #1a1a1a;
-      color: #f5f5f5;
-      border: none;
-      padding: 1rem;
-      font-size: 1rem;
-      resize: none;
-      margin-bottom: 1rem;
-    }
-    button {
-      background: #ff4c4c;
-      color: white;
-      border: none;
-      padding: 0.8rem 1.2rem;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-bottom: 2rem;
-    }
-    .library {
-      width: 90%;
-      max-width: 600px;
-      background: #1a1a1a;
-      padding: 1rem;
-      margin-top: 2rem;
-      border-radius: 8px;
-    }
-    .letter {
-      border-bottom: 1px solid #333;
-      padding: 1rem 0;
-    }
-    .letter:last-child {
-      border-bottom: none;
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <h1>🖤 The Letter You’ll Never Send</h1>
-  <textarea id="letterInput" placeholder="Write like no one will ever read it..."></textarea>
+  <h1>SoulSpeak</h1>
+  <textarea id="letterInput" placeholder="Write your letter..."></textarea>
   <button onclick="submitLetter()">Save Letter</button>
-
-  <div class="library" id="library">
-    <h2>📚 Soul Library</h2>
-    <div id="lettersContainer"></div>
-  </div>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js"></script>
+  <div id="library"></div>
 
   <script>
-    // 🔥 Replace with your Firebase config
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "soulspeak-96d15.firebaseapp.com",
-      projectId: "soulspeak-96d15",
-      storageBucket: "soulspeak-96d15.appspot.com",
-      messagingSenderId: "890699921246",
-      appId: "1:890699921246:web:3e12bb6d245802620d81cf",
-      measurementId: "G-7ESP3XQKHY"
-    };
+    const supabase = supabase.createClient(
+      "https://ictselnzuxbtrwcabbyu.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    );
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
     let userId = null;
 
-    // Anonymous login
-    auth.signInAnonymously().then(userCred => {
-      userId = userCred.user.uid;
+    async function anonymousLogin() {
+      const email = `user_${Date.now()}@soulspeak.com`;
+      const password = "soulspeak123";
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) return console.error(error);
+      userId = data.user.id;
       loadLetters();
-    });
-
-    // Save letter to Firestore
-    function submitLetter() {
-      const text = document.getElementById("letterInput").value.trim();
-      if (!text) return alert("Write something first.");
-      db.collection("letters").add({
-        text,
-        userId,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        publishAfter: Date.now() + 30 * 24 * 60 * 60 * 1000 // 30 days later
-      }).then(() => {
-        alert("Letter saved. You’ll decide what happens to it after 30 days.");
-        document.getElementById("letterInput").value = "";
-      });
     }
 
-    // Load published letters
-    function loadLetters() {
-      db.collection("letters")
-        .where("publishAfter", "<=", Date.now())
-        .orderBy("createdAt", "desc")
-        .limit(10)
-        .onSnapshot(snapshot => {
-          const container = document.getElementById("lettersContainer");
-          container.innerHTML = "";
-          snapshot.forEach(doc => {
-            const data = doc.data();
-            const div = document.createElement("div");
-            div.className = "letter";
-            div.textContent = data.text;
-            container.appendChild(div);
-          });
-        });
+    anonymousLogin();
+
+    async function submitLetter() {
+      const text = document.getElementById("letterInput").value;
+      const publishAfter = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+      await supabase.from("letters").insert([{ text, user_id: userId, publish_after: publishAfter }]);
+      alert("Letter saved.");
+      document.getElementById("letterInput").value = "";
+    }
+
+    async function loadLetters() {
+      const now = new Date().toISOString();
+      const { data } = await supabase
+        .from("letters")
+        .select("text")
+        .lte("publish_after", now)
+        .order("created_at", { ascending: false });
+      const container = document.getElementById("library");
+      container.innerHTML = "";
+      data.forEach(letter => {
+        const div = document.createElement("div");
+        div.textContent = letter.text;
+        container.appendChild(div);
+      });
     }
   </script>
 </body>
