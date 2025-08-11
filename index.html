@@ -1,205 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SoulSpeak</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
-
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Space Grotesk', sans-serif;
       background: linear-gradient(to right, #1f1c2c, #928dab);
-      color: #eee;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
       color: #fff;
+      padding: 2rem;
+    }
+    h1, h2, h3 {
       text-align: center;
     }
-
-    .tagline {
-      font-size: 1.1em;
-      color: #ccc;
-      margin-bottom: 30px;
-      text-align: center;
-      max-width: 600px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      width: 100%;
-      max-width: 600px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .stats {
-      text-align: center;
-      font-size: 1em;
-      margin-bottom: 10px;
-    }
-
-    input, textarea, select, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 8px;
+    .card, textarea, input, select, button {
+      display: block;
+      margin: 1rem auto;
+      width: 90%;
+      max-width: 500px;
+      padding: 1rem;
+      border-radius: 0.5rem;
       border: none;
-      font-size: 1em;
-      background: #2c2b3c;
-      color: #eee;
     }
-
     button {
-      background: #ff4081;
-      font-weight: bold;
+      background: #ff6f61;
+      color: white;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
-
     button:hover {
-      background: #e91e63;
+      background: #ff3b2e;
     }
-
-    .chat-log {
-      height: 180px;
-      overflow-y: auto;
-      background: #2c2b3c;
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 0.95em;
-    }
-
-    .chat-log p {
-      margin: 5px 0;
-    }
-
-    .footer {
-      margin-top: 40px;
-      font-size: 0.9em;
-      color: #aaa;
-      text-align: center;
-      max-width: 600px;
-    }
-
-    .room-btn {
-      background: #00c9a7;
-      color: #fff;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 2em; }
-      .tagline { font-size: 1em; }
+    #blogFeed div, #searchResults p {
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      margin: 0.5rem auto;
+      border-radius: 0.5rem;
     }
   </style>
 </head>
 <body>
-  <h1>🧠 SoulSpeak</h1>
-  <div class="tagline">
-    A place to talk real. No judgment. No filters. Just you, your thoughts, and people who get it.
-  </div>
-
-  <div class="card stats">
-    XP: <span id="xp">0</span> · Streak: <span id="streak">1</span> 🔥
-  </div>
+  <h1>🌟 SoulSpeak</h1>
 
   <div class="card">
-    <h3>💬 Talk to Alysa</h3>
-    <div class="chat-log" id="chatLog">
-      <p><strong>Alysa:</strong> Yo, welcome. What’s on your mind?</p>
-    </div>
-    <input type="text" id="userInput" placeholder="Type something..." />
-    <button onclick="sendMessage()">Send</button>
-  </div>
-
-  <div class="card">
-    <h3>📝 Drop Your Thoughts</h3>
-    <textarea id="traumaText" placeholder="Write what's on your chest..."></textarea>
-    <button onclick="submitPost()">Post Anonymously</button>
-    <button onclick="requestCounseling()">Request Counseling</button>
-  </div>
-
-  <div class="card">
-    <h3>🎯 Choose Your Vibe</h3>
+    <button onclick="signInWithGoogle()">Sign in with Gmail</button>
+    <input type="text" id="username" placeholder="Choose your username" />
     <select id="vibe">
-      <option>Chill</option>
-      <option>Focused</option>
-      <option>Lost</option>
-      <option>Healing</option>
-      <option>Ready to Talk</option>
+      <option value="">Select your vibe</option>
+      <option value="Focused">Focused</option>
+      <option value="Chill">Chill</option>
+      <option value="Creative">Creative</option>
+      <option value="Lost but trying">Lost but trying</option>
     </select>
-    <button class="room-btn" onclick="enterRoom()">Enter Room</button>
+    <input type="file" id="profilePic" />
+    <button onclick="saveUserData()">Save Profile</button>
   </div>
 
-  <audio autoplay loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4b3b6b3c9c.mp3?filename=calm-meditation-ambient-110397.mp3" type="audio/mpeg">
-  </audio>
+  <div class="card" id="dashboard" style="display:none;">
+    <h2>Welcome, <span id="userName"></span> 👋</h2>
+    <p>Vibe: <span id="userVibe"></span></p>
+    <p>XP: <span id="userXP">0</span></p>
+    <button onclick="dailyCheckIn()">Check-in for XP</button>
 
-  <div class="footer">
-    © 2025 SoulSpeak. Built in India. Made for the real ones.
+    <h3>Create Blog</h3>
+    <input type="text" id="blogTitle" placeholder="Blog Title" />
+    <textarea id="blogContent" placeholder="Write your thoughts..."></textarea>
+    <button onclick="createBlog()">Post Blog</button>
+
+    <h3>Blog Feed</h3>
+    <div id="blogFeed"></div>
+
+    <h3>Create Post</h3>
+    <textarea id="postText" placeholder="What's on your mind?"></textarea>
+    <input type="file" id="postImage" />
+    <button onclick="createPost()">Post</button>
+
+    <h3>Search</h3>
+    <input type="text" id="searchInput" placeholder="Search users or blogs" />
+    <button onclick="search()">Search</button>
+    <div id="searchResults"></div>
   </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-storage.js"></script>
 
   <script>
-    let xp = 0;
-    let streak = 1;
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "soulspeak.firebaseapp.com",
+      projectId: "soulspeak",
+      storageBucket: "soulspeak.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-    function updateStats(addXP) {
-      xp += addXP;
-      document.getElementById('xp').textContent = xp;
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    function signInWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).then(result => {
+        alert("Signed in as " + result.user.email);
+      });
     }
 
-    function sendMessage() {
-      const input = document.getElementById('userInput').value;
-      const chatLog = document.getElementById('chatLog');
-      if (input.trim() === '') return;
-
-      chatLog.innerHTML += `<p><strong>You:</strong> ${input}</p>`;
-      updateStats(2);
-
-      let response = "I hear you. Want to go deeper?";
-      const lower = input.toLowerCase();
-      if (lower.includes("hello")) response = "Hey! Glad you’re here. Let’s talk.";
-      if (lower.includes("sad")) response = "That sucks, man. Wanna unpack it?";
-      if (lower.includes("help")) response = "You’re not alone. I got you.";
-      if (lower.includes("happy")) response = "Nice! What’s making you smile?";
-      if (lower.includes("alone")) response = "You’re not alone anymore. I’m here.";
-
-      chatLog.innerHTML += `<p><strong>Alysa:</strong> ${response}</p>`;
-      document.getElementById('userInput').value = '';
-      chatLog.scrollTop = chatLog.scrollHeight;
-    }
-
-    function submitPost() {
-      const text = document.getElementById('traumaText').value;
-      if (text.trim() === '') return;
-      alert("Posted anonymously. Respect for sharing.");
-      updateStats(5);
-      document.getElementById('traumaText').value = '';
-    }
-
-    function requestCounseling() {
-      alert("Counseling request sent. Someone will reach out soon.");
-      updateStats(10);
-    }
-
-    function enterRoom() {
+    function saveUserData() {
+      const user = auth.currentUser;
+      const username = document.getElementById('username').value;
       const vibe = document.getElementById('vibe').value;
-      alert(`Entering a ${vibe} room...`);
-      updateStats(3);
+      const file = document.getElementById('profilePic').files[0];
+
+      if (!user || !username || !vibe || !file) return alert("Fill all fields");
+
+      const storageRef = storage.ref(`profilePics/${user.uid}`);
+      storageRef.put(file).then(() => {
+        storageRef.getDownloadURL().then(url => {
+          db.collection("users").doc(user.uid).set({
+            username, vibe, email: user.email, XP: 0, profilePic: url
+          }).then(() => {
+            showDashboard(user.uid);
+          });
+        });
+      });
+    }
+
+    function showDashboard(uid) {
+      db.collection("users").doc(uid).get().then(doc => {
+        const data = doc.data();
+        document.getElementById("userName").textContent = data.username;
+        document.getElementById("userVibe").textContent = data.vibe;
+        document.getElementById("userXP").textContent = data.XP;
+        document.getElementById("dashboard").style.display = "block";
+        loadBlogs();
+      });
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        db.collection("users").doc(user.uid).get().then(doc => {
+          if (doc.exists) showDashboard(user.uid);
+        });
+      }
+    });
+
+    function dailyCheckIn() {
+      const user = auth.currentUser;
+      const userRef = db.collection("users").doc(user.uid);
+      userRef.update({ XP: firebase.firestore.FieldValue.increment(10) }).then(() => {
+        userRef.get().then(doc => {
+          document.getElementById("userXP").textContent = doc.data().XP;
+        });
+      });
+    }
+
+    function createBlog() {
+      const user = auth.currentUser;
+      const title = document.getElementById('blogTitle').value;
+      const content = document.getElementById('blogContent').value;
+      db.collection("blogs").add({
+        title, content, authorID: user.uid, timestamp: new Date()
+      }).then(loadBlogs);
+    }
+
+    function loadBlogs() {
+      const feed = document.getElementById("blogFeed");
+      feed.innerHTML = "";
+      db.collection("blogs").orderBy("timestamp", "desc").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          feed.innerHTML += `<div><h4>${data.title}</h4><p>${data.content}</p></div>`;
+        });
+      });
+    }
+
+    function createPost() {
+      const user = auth.currentUser;
+      const text = document.getElementById('postText').value;
+      const file = document.getElementById('postImage').files[0];
+      const storageRef = storage.ref(`posts/${Date.now()}_${file.name}`);
+      storageRef.put(file).then(() => {
+        storageRef.getDownloadURL().then(url => {
+          db.collection("posts").add({
+            userID: user.uid, text, imageURL: url, timestamp: new Date()
+          });
+        });
+      });
+    }
+
+    function search() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const resultsDiv = document.getElementById('searchResults');
+      resultsDiv.innerHTML = "";
+
+      db.collection("users").where("username", ">=", query).get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          resultsDiv.innerHTML += `<p>${data.username} (${data.vibe})</p>`;
+        });
+      });
+
+      db.collection("blogs").where("title", ">=", query).get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          resultsDiv.innerHTML += `<p><strong>${data.title}</strong>: ${data.content}</p>`;
+        });
+      });
     }
   </script>
 </body>
 </html>
+
