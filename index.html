@@ -4,157 +4,121 @@
   <meta charset="UTF-8">
   <title>IND Connect</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
+
     body {
       margin: 0;
-      background: linear-gradient(to bottom right, #fceabb, #f8b500);
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: radial-gradient(circle at top left, #ff6ec4, #7873f5);
+      font-family: 'Poppins', sans-serif;
+      color: white;
       overflow: hidden;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
       height: 100vh;
       position: relative;
     }
 
-    .boy {
-      width: 80px;
-      height: 120px;
-      background: #ffcc99;
-      border-radius: 50% 50% 0 0;
+    .splash {
       position: absolute;
-      left: -100px;
-      bottom: 100px;
-      animation: walkIn 3s forwards;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-
-    .face {
-      width: 60px;
-      height: 60px;
-      background: #ffe0bd;
+      width: 400px;
+      height: 200px;
+      background: radial-gradient(circle, #ff4081, #ff1744);
       border-radius: 50%;
-      position: absolute;
-      top: 10px;
-      left: 10px;
-    }
-
-    .bucket {
-      width: 30px;
-      height: 40px;
-      background: #66ccff;
-      border-radius: 5px;
-      position: absolute;
-      left: -70px;
-      bottom: 80px;
-      animation: walkIn 3s forwards;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
-    }
-
-    @keyframes walkIn {
-      to {
-        left: 40%;
-      }
-    }
-
-    .paint {
-      width: 0;
-      height: 0;
-      background: radial-gradient(circle, #ff4081, #ff1744, #ff8a65);
-      border-radius: 50%;
-      position: absolute;
-      left: 45%;
-      bottom: 60px;
+      bottom: 20%;
       opacity: 0;
-      animation: spill 2s ease-out forwards;
-      animation-delay: 3s;
+      animation: splashIn 1.5s ease-out forwards;
     }
 
-    @keyframes spill {
+    @keyframes splashIn {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
       to {
-        width: 300px;
-        height: 150px;
+        transform: scale(1);
         opacity: 1;
       }
     }
 
-    .text {
-      position: absolute;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 3em;
-      font-weight: bold;
-      color: white;
-      text-shadow: 2px 2px #ff4081;
+    h1 {
+      font-size: 4em;
+      font-weight: 900;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      background: linear-gradient(to right, #fff, #ff4081);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glitch 1s infinite;
       opacity: 0;
-      animation: revealText 2s ease-in forwards;
-      animation-delay: 5s;
+      animation-delay: 1.5s;
+      animation-fill-mode: forwards;
     }
 
-    @keyframes revealText {
-      to {
-        opacity: 1;
-      }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-1px, 1px); }
+      80% { transform: translate(1px, -1px); }
+      100% { transform: translate(0); }
     }
 
-    .welcome {
-      position: absolute;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 2em;
-      color: #fff;
-      text-shadow: 1px 1px #ff4081;
+    p {
+      font-size: 1.5em;
+      margin-top: 10px;
       opacity: 0;
-      animation: fadeIn 2s ease-in forwards;
-      animation-delay: 7s;
+      animation: fadeInUp 1.5s ease-out forwards;
+      animation-delay: 2.5s;
     }
 
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-
-    .enter-btn {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 24px;
+    .btn {
+      margin-top: 40px;
+      padding: 14px 28px;
       font-size: 1.2em;
+      background: white;
+      color: #7873f5;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      animation: fadeInUp 1.5s ease-out forwards;
+      animation-delay: 3.5s;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
       background: #ff4081;
       color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      opacity: 0;
-      animation: fadeIn 2s ease-in forwards;
-      animation-delay: 8s;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: background 0.3s;
     }
 
-    .enter-btn:hover {
-      background: #e91e63;
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="boy">
-    <div class="face"></div>
-  </div>
-  <div class="bucket"></div>
-  <div class="paint"></div>
-  <div class="text">IND connect</div>
-  <div class="welcome">Hello, welcome to Connect!</div>
-  <button class="enter-btn" onclick="enterSite()">Enter Site</button>
+  <div class="splash"></div>
+  <h1>IND connect</h1>
+  <p>Hello, welcome to Connect!</p>
+  <button class="btn" onclick="enterSite()">Dive In</button>
 
   <script>
     function enterSite() {
       document.body.innerHTML = `
-        <div style="text-align:center; padding-top: 100px; font-size: 2em; color: #333;">
-          🎉 You're in! Welcome to IND Connect.
+        <div style="text-align:center; padding-top: 100px; font-size: 2em;">
+          🚀 You’re in. Let’s vibe.
         </div>
       `;
     }
