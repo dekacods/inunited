@@ -14,6 +14,7 @@
       flex-direction: column;
       align-items: center;
       padding: 20px;
+      transition: background 0.5s ease;
     }
 
     h1 {
@@ -30,7 +31,18 @@
       max-width: 600px;
     }
 
-    .chat-box, .post-box {
+    .stats {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .chat-box, .post-box, .vibe-box {
       background: white;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -54,7 +66,7 @@
       margin: 5px 0;
     }
 
-    input, textarea, button {
+    input, textarea, select, button {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
@@ -90,9 +102,32 @@
     We’re here for you. Your best friends will review you soon—be patient, we care. This is your space to breathe, speak, and heal.
   </div>
 
+  <div class="stats">
+    <strong>XP:</strong> <span id="xp">0</span> · <strong>Streak:</strong> <span id="streak">1</span> 🔥
+  </div>
+
+  <div class="vibe-box">
+    <h3>🌈 Choose Your Vibe</h3>
+    <input type="text" id="nickname" placeholder="Enter your nickname" />
+    <select id="vibe">
+      <option>Dreamer</option>
+      <option>Healer</option>
+      <option>Rebel</option>
+      <option>Seeker</option>
+    </select>
+    <select onchange="setMoodTheme(this.value)">
+      <option value="">Choose Mood Theme</option>
+      <option value="sad">Sad</option>
+      <option value="hopeful">Hopeful</option>
+      <option value="angry">Angry</option>
+      <option value="calm">Calm</option>
+    </select>
+  </div>
+
   <div class="chat-box">
+    <h3>💬 Talk to Alysa</h3>
     <div class="chat-log" id="chatLog">
-      <p><strong>Bot:</strong> Hey there, beautiful soul. I'm Alysa. How are you feeling today?</p>
+      <p><strong>Alysa:</strong> Hey there, beautiful soul. I’m Alysa. How are you feeling today?</p>
     </div>
     <input type="text" id="userInput" placeholder="Type something..." />
     <button onclick="sendMessage()">Send</button>
@@ -102,19 +137,35 @@
     <h3>📝 Share Your Thoughts</h3>
     <textarea id="traumaText" placeholder="Write what's on your heart..."></textarea>
     <button onclick="submitPost()">Post Anonymously</button>
+    <button onclick="requestCounseling()">Request Counseling</button>
   </div>
 
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4b3b6b3c9c.mp3?filename=calm-meditation-ambient-110397.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="footer">
-    © 2025 SoulSpeak. You are not alone. We’re listening, always.
+    © 2025 SoulSpeak. Made with care in India. You are not alone. Alysa is always listening.
   </div>
 
   <script>
+    let xp = 0;
+    let streak = 1;
+
+    function updateStats(addXP) {
+      xp += addXP;
+      document.getElementById('xp').textContent = xp;
+    }
+
     function sendMessage() {
+      const nickname = document.getElementById('nickname').value || "You";
+      const vibe = document.getElementById('vibe').value || "Soul";
       const input = document.getElementById('userInput').value;
       const chatLog = document.getElementById('chatLog');
       if (input.trim() === '') return;
 
-      chatLog.innerHTML += `<p><strong>You:</strong> ${input}</p>`;
+      chatLog.innerHTML += `<p><strong>${nickname} (${vibe}):</strong> ${input}</p>`;
+      updateStats(2);
 
       let response = "I'm here for you. Want to share more?";
       const lower = input.toLowerCase();
@@ -124,7 +175,7 @@
       if (lower.includes("happy")) response = "That’s beautiful to hear! What’s bringing you joy today?";
       if (lower.includes("alone")) response = "You’re not alone anymore. I’m right here with you.";
 
-      chatLog.innerHTML += `<p><strong>Bot:</strong> ${response}</p>`;
+      chatLog.innerHTML += `<p><strong>Alysa:</strong> ${response}</p>`;
       document.getElementById('userInput').value = '';
       chatLog.scrollTop = chatLog.scrollHeight;
     }
@@ -133,10 +184,22 @@
       const text = document.getElementById('traumaText').value;
       if (text.trim() === '') return;
       alert("Your thoughts have been shared anonymously. Thank you for trusting us.");
+      updateStats(5);
       document.getElementById('traumaText').value = '';
+    }
+
+    function requestCounseling() {
+      alert("Alysa has noted your request. Someone will reach out soon. You're not alone.");
+      updateStats(10);
+    }
+
+    function setMoodTheme(mood) {
+      const body = document.body;
+      if (mood === "sad") body.style.background = "linear-gradient(to right, #a1c4fd, #c2e9fb)";
+      if (mood === "hopeful") body.style.background = "linear-gradient(to right, #fbc2eb, #a6c1ee)";
+      if (mood === "angry") body.style.background = "linear-gradient(to right, #ff9a9e, #fad0c4)";
+      if (mood === "calm") body.style.background = "linear-gradient(to right, #d4fc79, #96e6a1)";
     }
   </script>
 </body>
 </html>
-
-
