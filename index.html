@@ -1,118 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>IND Connect</title>
+  <!-- existing styles -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
+    /* your Gen Z styles... */
 
-    body {
-      margin: 0;
-      background: radial-gradient(circle at top left, #ff6ec4, #7873f5);
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      position: relative;
-    }
-
-    .splash {
+    /* burst effect styles */
+    .burst {
       position: absolute;
-      width: 400px;
-      height: 200px;
+      width: 20px;
+      height: 20px;
       background: radial-gradient(circle, #ff4081, #ff1744);
       border-radius: 50%;
-      bottom: 20%;
-      opacity: 0;
-      animation: splashIn 1.5s ease-out forwards;
+      pointer-events: none;
+      animation: burstAnim 0.6s ease-out forwards;
+      z-index: 999;
     }
 
-    @keyframes splashIn {
-      from {
-        transform: scale(0);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    h1 {
-      font-size: 4em;
-      font-weight: 900;
-      letter-spacing: -2px;
-      text-transform: uppercase;
-      background: linear-gradient(to right, #fff, #ff4081);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: glitch 1s infinite;
-      opacity: 0;
-      animation-delay: 1.5s;
-      animation-fill-mode: forwards;
-    }
-
-    @keyframes glitch {
-      0% { transform: translate(0); }
-      20% { transform: translate(-2px, 2px); }
-      40% { transform: translate(2px, -2px); }
-      60% { transform: translate(-1px, 1px); }
-      80% { transform: translate(1px, -1px); }
-      100% { transform: translate(0); }
-    }
-
-    p {
-      font-size: 1.5em;
-      margin-top: 10px;
-      opacity: 0;
-      animation: fadeInUp 1.5s ease-out forwards;
-      animation-delay: 2.5s;
-    }
-
-    .btn {
-      margin-top: 40px;
-      padding: 14px 28px;
-      font-size: 1.2em;
-      background: white;
-      color: #7873f5;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      opacity: 0;
-      animation: fadeInUp 1.5s ease-out forwards;
-      animation-delay: 3.5s;
-      transition: transform 0.3s ease, background 0.3s ease;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-      background: #ff4081;
-      color: white;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        transform: translateY(40px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    @keyframes burstAnim {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(8); opacity: 0; }
     }
   </style>
 </head>
+
 <body>
-  <div class="splash"></div>
-  <h1>IND connect</h1>
-  <p>Hello, welcome to Connect!</p>
-  <button class="btn" onclick="enterSite()">Dive In</button>
+  <!-- your page content -->
 
   <script>
     function enterSite() {
@@ -122,6 +33,18 @@
         </div>
       `;
     }
+
+    // burst effect on click
+    document.addEventListener('click', function(e) {
+      const burst = document.createElement('div');
+      burst.className = 'burst';
+      burst.style.left = `${e.clientX - 10}px`;
+      burst.style.top = `${e.clientY - 10}px`;
+      document.body.appendChild(burst);
+
+      setTimeout(() => {
+        burst.remove();
+      }, 600);
+    });
   </script>
 </body>
-</html>
