@@ -1,13 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SoulSpeak</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #ff6ec4, #7873f5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    textarea {
+      width: 90%;
+      max-width: 600px;
+      height: 120px;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+      resize: none;
+      margin-bottom: 1rem;
+      background: #1f1f1f;
+      color: #fff;
+    }
+    button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #ff6ec4;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #ff4eb8;
+    }
+    #library {
+      margin-top: 2rem;
+      width: 90%;
+      max-width: 600px;
+    }
+    .letter {
+      background: #1a1a1a;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 110, 196, 0.2);
+    }
+  </style>
 </head>
 <body>
   <h1>SoulSpeak</h1>
-  <textarea id="letterInput" placeholder="Write your letter..."></textarea>
-  <button onclick="submitLetter()">Save Letter</button>
+  <textarea id="letterInput" placeholder="Pour your soul here..."></textarea>
+  <button onclick="submitLetter()">Save & View</button>
   <div id="library"></div>
 
   <script>
@@ -23,7 +82,7 @@
       const password = "soulspeak123";
       const { data, error } = await supabase.auth.signUp({ email, password });
       if (error) return console.error(error);
-      userId = data.user.id;
+      userId = data.user?.id;
       loadLetters();
     }
 
@@ -31,28 +90,34 @@
 
     async function submitLetter() {
       const text = document.getElementById("letterInput").value;
-      const publishAfter = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-      await supabase.from("letters").insert([{ text, user_id: userId, publish_after: publishAfter }]);
-      alert("Letter saved.");
+      const publishAfter = new Date().toISOString(); // Instant view
+      const { error } = await supabase
+        .from("letters")
+        .insert([{ text, user_id: userId, publish_after: publishAfter }]);
+      if (error) return console.error(error);
       document.getElementById("letterInput").value = "";
+      loadLetters();
     }
 
     async function loadLetters() {
       const now = new Date().toISOString();
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("letters")
-        .select("text")
+        .select("text, created_at")
         .lte("publish_after", now)
         .order("created_at", { ascending: false });
+      if (error) return console.error(error);
       const container = document.getElementById("library");
       container.innerHTML = "";
       data.forEach(letter => {
         const div = document.createElement("div");
-        div.textContent = letter.text;
+        div.className = "letter";
+        div.innerHTML = `<p>${letter.text}</p><small>${new Date(letter.created_at).toLocaleString()}</small>`;
         container.appendChild(div);
       });
     }
   </script>
 </body>
 </html>
+
 
