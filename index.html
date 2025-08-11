@@ -6,8 +6,8 @@
   <style>
     body {
       margin: 0;
-      background: #fff8f0;
-      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #fceabb, #f8b500);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       overflow: hidden;
       display: flex;
       justify-content: center;
@@ -19,23 +19,35 @@
     .boy {
       width: 80px;
       height: 120px;
-      background: #ffe0b2;
+      background: #ffcc99;
       border-radius: 50% 50% 0 0;
       position: absolute;
       left: -100px;
       bottom: 100px;
       animation: walkIn 3s forwards;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .face {
+      width: 60px;
+      height: 60px;
+      background: #ffe0bd;
+      border-radius: 50%;
+      position: absolute;
+      top: 10px;
+      left: 10px;
     }
 
     .bucket {
       width: 30px;
       height: 40px;
-      background: #0077cc;
+      background: #66ccff;
       border-radius: 5px;
       position: absolute;
       left: -70px;
       bottom: 80px;
       animation: walkIn 3s forwards;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
     }
 
     @keyframes walkIn {
@@ -47,7 +59,7 @@
     .paint {
       width: 0;
       height: 0;
-      background: radial-gradient(circle, #ff4081, #ff1744);
+      background: radial-gradient(circle, #ff4081, #ff1744, #ff8a65);
       border-radius: 50%;
       position: absolute;
       left: 45%;
@@ -73,6 +85,7 @@
       font-size: 3em;
       font-weight: bold;
       color: white;
+      text-shadow: 2px 2px #ff4081;
       opacity: 0;
       animation: revealText 2s ease-in forwards;
       animation-delay: 5s;
@@ -90,7 +103,8 @@
       left: 50%;
       transform: translateX(-50%);
       font-size: 2em;
-      color: #333;
+      color: #fff;
+      text-shadow: 1px 1px #ff4081;
       opacity: 0;
       animation: fadeIn 2s ease-in forwards;
       animation-delay: 7s;
@@ -101,14 +115,49 @@
         opacity: 1;
       }
     }
+
+    .enter-btn {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      font-size: 1.2em;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      opacity: 0;
+      animation: fadeIn 2s ease-in forwards;
+      animation-delay: 8s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+
+    .enter-btn:hover {
+      background: #e91e63;
+    }
   </style>
 </head>
 <body>
-  <div class="boy"></div>
+  <div class="boy">
+    <div class="face"></div>
+  </div>
   <div class="bucket"></div>
   <div class="paint"></div>
   <div class="text">IND connect</div>
   <div class="welcome">Hello, welcome to Connect!</div>
+  <button class="enter-btn" onclick="enterSite()">Enter Site</button>
+
+  <script>
+    function enterSite() {
+      document.body.innerHTML = `
+        <div style="text-align:center; padding-top: 100px; font-size: 2em; color: #333;">
+          🎉 You're in! Welcome to IND Connect.
+        </div>
+      `;
+    }
+  </script>
 </body>
 </html>
-
