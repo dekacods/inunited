@@ -2,65 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IND – Connect</title>
+  <title>IND Connect</title>
   <style>
     body {
       margin: 0;
-      background-color: #f0f8ff;
+      background: #fff8f0;
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
+      position: relative;
     }
 
-    .letter {
-      font-size: 5em;
-      font-weight: bold;
-      color: #0077cc;
+    .boy {
+      width: 80px;
+      height: 120px;
+      background: #ffe0b2;
+      border-radius: 50% 50% 0 0;
       position: absolute;
-      opacity: 0;
-      animation: flyIn 1.5s forwards;
-    }
-
-    .letter:nth-child(1) {
-      animation-delay: 0.2s;
       left: -100px;
-      top: 40%;
+      bottom: 100px;
+      animation: walkIn 3s forwards;
     }
 
-    .letter:nth-child(2) {
-      animation-delay: 0.6s;
-      left: 50%;
-      top: -100px;
+    .bucket {
+      width: 30px;
+      height: 40px;
+      background: #0077cc;
+      border-radius: 5px;
+      position: absolute;
+      left: -70px;
+      bottom: 80px;
+      animation: walkIn 3s forwards;
     }
 
-    .letter:nth-child(3) {
-      animation-delay: 1s;
-      right: -100px;
-      top: 40%;
-    }
-
-    @keyframes flyIn {
+    @keyframes walkIn {
       to {
-        opacity: 1;
-        transform: translate(0, 0);
-        left: 33%;
-        top: 30%;
-        right: auto;
+        left: 40%;
       }
     }
 
-    .connect {
+    .paint {
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, #ff4081, #ff1744);
+      border-radius: 50%;
+      position: absolute;
+      left: 45%;
+      bottom: 60px;
+      opacity: 0;
+      animation: spill 2s ease-out forwards;
+      animation-delay: 3s;
+    }
+
+    @keyframes spill {
+      to {
+        width: 300px;
+        height: 150px;
+        opacity: 1;
+      }
+    }
+
+    .text {
+      position: absolute;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 3em;
+      font-weight: bold;
+      color: white;
+      opacity: 0;
+      animation: revealText 2s ease-in forwards;
+      animation-delay: 5s;
+    }
+
+    @keyframes revealText {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .welcome {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 2em;
       color: #333;
-      margin-top: 200px;
       opacity: 0;
       animation: fadeIn 2s ease-in forwards;
-      animation-delay: 2s;
+      animation-delay: 7s;
     }
 
     @keyframes fadeIn {
@@ -71,9 +104,11 @@
   </style>
 </head>
 <body>
-  <div class="letter">I</div>
-  <div class="letter">N</div>
-  <div class="letter">D</div>
-  <div class="connect">connect</div>
+  <div class="boy"></div>
+  <div class="bucket"></div>
+  <div class="paint"></div>
+  <div class="text">IND connect</div>
+  <div class="welcome">Hello, welcome to Connect!</div>
 </body>
 </html>
+
